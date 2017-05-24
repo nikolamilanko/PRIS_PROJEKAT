@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<style>
+#dodavanje {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 40em;
+	height: 20em;
+	margin-top: -10em; /*polovina vrednosti height*/
+	margin-left: -11em; /*polovina vrednosti width*/
+}
+
+#mybody {
+	background-color: #f3f3f3;
+}
+</style>
+</h:head>
+
+<h:body id="mybody">
+	<f:view>
+		<h:form id="dodavanje">
+
+			<h:panelGrid columns="3" cellpadding="5">
+				<f:facet name="header">
+					Novi predavac
+				</f:facet>
+
+				<h:outputLabel for="ime" value="Ime: " />
+				<p:inputText id="ime" value="#{dodavanjePredavacaMB.ime}"
+					label="ime" />
+				<p:message for="ime" />
+
+				<h:outputLabel for="prezime" value="Prezime: " />
+				<p:inputText id="prezime" value="#{dodavanjePredavacaMB.prezime}"
+					label="prezime" />
+				<p:message for="prezime" />
+
+				<h:outputLabel for="titula" value="Titula: " />
+				<p:inputText id="titula" value="#{dodavanjePredavacaMB.titula}"
+					label="titula" />
+				<p:message for="titula" />
+
+				<h:outputLabel for="email" value="Email: " />
+				<p:inputText id="email" value="#{dodavanjePredavacaMB.email}"
+					label="email"
+					validatorMessage="#{dodavanjePredavacaMB.email} is not a valid email">
+					<f:validateRegex
+						pattern="[a-zA-Z0-9.!#$%&amp;’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*" />
+				</p:inputText>
+				<p:message for="email" />
+
+				<h:outputLabel for="username" value="Username: " />
+				<p:inputText id="username" value="#{dodavanjePredavacaMB.username}"
+					label="username" required="true"
+					requiredMessage="Unesite username." />
+				<p:message for="username" />
+
+				<h:outputLabel for="password" value="Password: " />
+				<p:password id="password" value="#{dodavanjePredavacaMB.password}"
+					match="potvrda" label="password" required="true" feedback="true"
+					validatorMessage="Password mora imati izmedju 1 i 20 karaktera i moze da sadrzi samo mala i velika slova i brojeve." />
+				<p:message for="password" />
+
+				<h:outputLabel for="potvrda" value="Potvrdi password: " />
+				<p:password id="potvrda"
+					value="#{dodavanjePredavacaMB.potvrdiPassword}"
+					label="potvrdi password" required="true" />
+				<p:message for="potvrda" />
+
+				<p:commandButton value="Sacuvaj"
+					action="#{dodavanjePredavacaMB.sacuvajPredavaca()}" style="width:150px;"
+					update="dodavanje" validateClient="true" />
+				<p:button value="Nazad" outcome="pocetnaAdmin.xhtml"
+					style="width:150px;"  />
+			</h:panelGrid>
+
+			<p:dialog header="Dodavanje predavaca" widgetVar="dlgUspesno"
+				modal="true" height="100" responsive="true">
+				<h:panelGrid columns="1" cellpadding="5" cellspacing="5">
+					<h:outputText value="Uspesno dodavanje!" />
+					<p:button value="OK" />
+				</h:panelGrid>
+			</p:dialog>
+
+			<p:dialog header="Dodavanje predavaca" widgetVar="dlgNeuspesno"
+				modal="true" height="100" responsive="true">
+				<h:panelGrid columns="1" cellpadding="5" cellspacing="5" >
+					<h:outputText value="Username je zauzet, unesite drugi!" />
+					<p:button value="OK" />
+				</h:panelGrid>
+			</p:dialog>
+
+		</h:form>
+	</f:view>
+</h:body>
+</h:html>

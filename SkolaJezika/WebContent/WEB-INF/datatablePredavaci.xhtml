@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="predavacTable" var="predavac"
+		value="#{manageBeanLogin.predavaci}" scrollable="true" editable="true"
+		rowKey="#{predavac.idpredavaca}"
+		selection="#{adminMB.selektovaniPredavac}" selectionMode="single">
+
+		<f:facet name="header">
+            <p:outputLabel value="Svi predavaci" />
+        </f:facet>
+
+		<p:ajax event="rowEdit" listener="#{adminMB.izmeniPredavaca}"
+			update=":myform:msgs" />
+
+		<p:column headerText="ID">
+			<h:outputText value="#{predavac.idpredavaca}" />
+		</p:column>
+
+		<p:column headerText="Ime">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{predavac.imepredavaca}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText id="imePredavaca" value="#{predavac.imepredavaca}"
+						style="width:100%" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Prezime">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{predavac.prezimepredavaca}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText id="prezimePredavaca"
+						value="#{predavac.prezimepredavaca}" style="width:100%" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Titula">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{predavac.titula}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText id="titulaPredavaca" value="#{predavac.titula}"
+						style="width:100%" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Email">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{predavac.emailpredavaca}" />
+				</f:facet>
+				<f:facet name="input">
+					<p:inputText id="emailPredavaca" value="#{predavac.emailpredavaca}"
+						style="width:100%" />
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column style="width:32px">
+			<p:rowEditor />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:contextMenu for="predavacTable">
+		<p:menuitem value="Delete" update="predavacTable :myform:msgs"
+			icon="ui-icon-close" actionListener="#{adminMB.izbrisiPredavaca}" />
+	</p:contextMenu>
+</ui:composition>

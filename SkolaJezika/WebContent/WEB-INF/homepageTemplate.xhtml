@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<style type="text/css">
+#myform {
+	margin-top: 5em;
+	margin-left: 5em;
+	margin-right: 5em;
+}
+
+#mydiv {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin-bottom: 1em;
+}
+</style>
+</h:head>
+
+<h:body>
+	<f:view>
+
+		<ui:insert name="metadata" />
+
+		<h:form id="myform">
+			<p:commandButton immediate="true" value="Logout"
+				action="#{manageBeanLogin.logout()}" />
+
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:panelGrid>
+
+				<p:row>
+					<p:column>
+						<ui:include src="/WEB-INF/datatableKursevi.xhtml" />
+					</p:column>
+
+					<ui:insert name="dugmeZaDodavanjeKursa" />
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="ui-widget-row">
+						<p:spacer height="100" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="text-align: center;">
+						<h:outputText
+							value="Ako zelite da promenite lozinku pritisnite dugme 'Promena
+						lozinke'" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:commandButton value="Promena lozinke"
+							onclick="PF('dlgIzmenaPassworda').show();"
+							style="width:150px; display: block; margin: 0px auto;" />
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+		</h:form>
+
+		<ui:insert name="promeniLozinkuDialog" />
+	</f:view>
+</h:body>
+</h:html>

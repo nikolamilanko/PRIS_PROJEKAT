@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+	<h:form>
+		<ui:repeat var="pitanje" value="#{pregledTestaManagedBean.pitanja}">
+			<h:panelGrid border="1" columns="3"
+				rendered="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje).size()==0}">
+				<p:outputLabel value="#{pitanje.tekstpitanja}" />
+				<p:outputLabel
+					value="#{pregledTestaManagedBean.polaznikoviOdgovoriZaPitanje.get(pitanje).get(0).tekstodgovora}" />
+				<p:selectBooleanCheckbox>
+					<p:ajax
+						listener="#{pregledTestaManagedBean.dodajUPregledaneOdgovore(pitanje)}"></p:ajax>
+				</p:selectBooleanCheckbox>
+			</h:panelGrid>
+			<h:panelGrid columns="4" border="1"
+				rendered="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje).size()>0}">
+				<p:outputLabel value="#{pitanje.tekstpitanja}" />
+				<ui:repeat var="tekstOdgovora"
+					value="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje)}"
+					varStatus="statusTeksta">
+					<h:panelGrid columns="3">
+						<p:outputLabel
+							value="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje).get(statusTeksta.index).tekstodgovora}" />
+						<p:selectBooleanCheckbox disabled="true" value="#{true}"
+							rendered="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje).get(statusTeksta.index).jetacan==1}"></p:selectBooleanCheckbox>
+						<p:selectBooleanCheckbox disabled="true" value="#{false}"
+							rendered="#{pregledTestaManagedBean.odgovoriZaPitanje.get(pitanje).get(statusTeksta.index).jetacan==0}"></p:selectBooleanCheckbox>
+						<ui:repeat var="test"
+							value="#{pregledTestaManagedBean.mapaZaokruzenihOdgovoraZaPitanje.get(pitanje).size()}"
+							varStatus="statusTest">
+							<h:panelGrid columns="1">
+							 <p:selectBooleanCheckbox disabled="true" value="#{true}"
+								rendered="#{pregledTestaManagedBean.mapaZaokruzenihOdgovoraZaPitanje.get(pitanje).get(statusTeksta.index) >-1}"></p:selectBooleanCheckbox>
+							<p:selectBooleanCheckbox disabled="true" value="#{false}"
+								rendered="#{pregledTestaManagedBean.mapaZaokruzenihOdgovoraZaPitanje.get(pitanje).get(statusTeksta.index) == -1}"></p:selectBooleanCheckbox> 
+								</h:panelGrid>
+						</ui:repeat>
+					</h:panelGrid>
+				</ui:repeat>
+			</h:panelGrid>
+			<!-- <p:outputLabel value = "#{pregledTestaManagedBean.polaznikoviOdgovoriZaPitanje.get(pitanje).get(0).tekstodgovora}"/> -->
+		</ui:repeat>
+		
+		<p:commandButton value="SACUVAJ REZULTAT" action="#{pregledTestaManagedBean.dodajRezultat()}"></p:commandButton>
+	</h:form>
+</h:body>
+</html>

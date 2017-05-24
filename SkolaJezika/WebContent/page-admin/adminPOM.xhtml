@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<f:view>
+		<h:form>
+			<h:outputText value="Izaberite tip lekcije: " />
+			<h:panelGrid columns="2">
+				<p:selectOneRadio
+					value="#{dodavanjeLekcijeManagedBean.radioNumberChecked}"
+					onclick="this.form.submit()">
+					<f:selectItem itemValue="1" itemLabel="Slike i tekst" />
+					<f:selectItem itemValue="2" itemLabel="Video" />
+
+				</p:selectOneRadio>
+			</h:panelGrid>
+		</h:form>
+		<h:form id="results"
+			rendered="#{dodavanjeLekcijeManagedBean.radioNumberChecked == 1}"
+			enctype="multipart/form-data">
+			<p:inputTextarea value="#{dodavanjeLekcijeManagedBean.opisLekcije}"
+				rows="20" cols="100" autoResize="false"></p:inputTextarea>
+			<p:fileUpload oncomplete="this.form.submit()" mode="advanced"
+				multiple="true"
+				fileUploadListener="#{dodavanjeLekcijeManagedBean.upload}"></p:fileUpload>
+		</h:form>
+		<h:form id="slike"
+			rendered="#{dodavanjeLekcijeManagedBean.clicked == true}">
+			<p:galleria value="#{dodavanjeLekcijeManagedBean.fajlovi}"
+				var="image" panelWidth="500" panelHeight="313" showCaption="true">
+				<p:graphicImage width="500" height="313"
+					value="#{dodavanjeLekcijeManagedBean.streamIzUplFajla()}" />
+			</p:galleria>
+		</h:form>
+
+		<h:button value="nova stranica!" outcome="/admin.xhtml"></h:button>
+		<h:form id="results2"
+			rendered="#{dodavanjeLekcijeManagedBean.radioNumberChecked == 2}">
+		Hello world2!
+	</h:form>
+		<h:button value="Sacuvaj"
+			onclick="#{dodavanjeLekcijeManagedBean.sacuvajLekciju()}"></h:button>
+		</f:view>
+</h:body>
+
+</h:html>

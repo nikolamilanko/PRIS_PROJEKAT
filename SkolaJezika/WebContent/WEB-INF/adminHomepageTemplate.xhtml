@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<style type="text/css">
+#myform {
+	margin-top: 5em;
+	margin-left: 5em;
+	margin-right: 5em;
+}
+
+#mydiv {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin-bottom: 1em;
+}
+</style>
+</h:head>
+
+<h:body>
+	<f:view>
+
+		<ui:insert name="metadata" />
+
+		<h:form id="myform">
+
+			<p:commandButton immediate="true" value="Logout"
+				action="#{manageBeanLogin.logout()}" />
+
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:panelGrid>
+
+				<p:row>
+					<p:column style="margin: auto">
+						<ui:include src="/WEB-INF/najboljiKurs.xhtml" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<ui:include src="/WEB-INF/datatableKursevi.xhtml" />
+					</p:column>
+
+					<ui:insert name="dugmeZaDodavanjeKursa" />
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="ui-widget-row">
+						<p:spacer height="100" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<ui:include src="/WEB-INF/datatablePredavaci.xhtml" />
+					</p:column>
+
+					<ui:insert name="dugmeZaDodavanjePredavaca" />
+				</p:row>
+
+				<p:row>
+					<p:column style="text-align: center;">
+						<h:outputText
+							value="Ako zelite da promenite lozinku pritisnite dugme 'Promena
+						lozinke'" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:commandButton value="Promena lozinke"
+							onclick="PF('dlgIzmenaPassworda').show();"
+							style="width:150px; display: block; margin: 0px auto;" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+		<h:form id="dialogForm">
+			<p:dialog header="Izmena passworda" widgetVar="dlgIzmenaPassworda"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="izmenaPassworda" style="text-align:center;">
+					<h:outputText value="Unesite stari i novi password:" />
+
+					<p:separator />
+
+					<p:panelGrid columns="2" columnClasses="label,value">
+
+						<h:outputLabel for="stariPassword" value="Stari password:" />
+						<p:password id="stariPassword" value="#{adminMB.stariPassword}"
+							label="stari password" required="true" />
+
+						<h:outputLabel for="password" value="Novi password: " />
+						<p:password id="password" value="#{adminMB.noviPassword}"
+							match="potvrda" label="password" required="true" feedback="true"
+							validatorMessage="Password mora imati izmedju 1 i 20 karaktera i moze da sadrzi samo mala i velika slova i brojeve." />
+
+						<h:outputLabel for="potvrda" value="Potvrdi novi password: " />
+						<p:password id="potvrda" value="#{adminMB.potvrdaNovogPassworda}"
+							label="potvrdi password" required="true" />
+
+						<p:commandButton value="Sacuvaj"
+							actionListener="#{adminMB.izmeniPassword}"
+							update="izmenaPassworda :myform:msgs" validateClient="true" />
+						<p:button value="Nazad" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</f:view>
+</h:body>
+</h:html>

@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="kursTable" widgetVar="kursTableVar" var="kurs"
+		value="#{manageBeanLogin.kursevi}" scrollable="true"
+		emptyMessage="Nema kurseva"
+		filteredValue="#{manageBeanLogin.filtriraniKursevi}" selectionMode="single" selection="#{manageBeanLogin.selektovaniKurs}" rowKey="#{kurs.idkursa}">
+
+		<f:facet name="header">
+			<p:outputLabel value="Svi kursevi" />
+			<p:outputPanel>
+				<h:outputText value="Pretrazi: " />
+				<p:inputText id="globalFilter" onkeyup="PF('kursTableVar').filter()"
+					style="width:150px" placeholder="Unesi rec" />
+				<p:commandButton value="Prikazi sve"
+					actionListener="#{manageBeanLogin.vratiSveKurseve}" update="@form" />
+			</p:outputPanel>
+		</f:facet>
+		<p:ajax event="rowSelect" listener="#{manageBeanLogin.onRowSelect}" />
+
+		<p:column headerText="Naziv" sortBy="#{kurs.nazivkursa}"
+			filterBy="#{kurs.nazivkursa}" filterMatchMode="contains">
+			<h:outputText value="#{kurs.nazivkursa}" />
+		</p:column>
+
+		<p:column headerText="Datum pocetka" sortBy="#{kurs.datumpocetka}">
+			<h:outputText value="#{kurs.datumpocetka}" />
+		</p:column>
+
+		<p:column headerText="Datum kraja" sortBy="#{kurs.datumkraja}">
+			<h:outputText value="#{kurs.datumkraja}" />
+		</p:column>
+
+		<p:column headerText="Predavac"
+			sortBy="#{kurs.predavac11.imepredavaca} #{kurs.predavac11.prezimepredavaca}"
+			filterBy="#{kurs.predavac11.imepredavaca} #{kurs.predavac11.prezimepredavaca}"
+			filterMatchMode="contains">
+			<h:outputText
+				value="#{kurs.predavac11.imepredavaca} #{kurs.predavac11.prezimepredavaca}" />
+		</p:column>
+
+		<p:column headerText="Potrebni poeni" sortBy="#{kurs.potrebnipoeni}"
+			filterBy="#{kurs.potrebnipoeni}" filterMatchMode="exact">
+			<h:outputText value="#{kurs.potrebnipoeni}" />
+		</p:column>
+	</p:dataTable>
+</ui:composition>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+	<h:form>
+		<p:panelGrid columns="1" border="1" style="margin-bottom:20px">
+			<p:outputLabel
+				value="Naziv lekcije: #{manageBeanLogin.selektovanaLekcija.test11s.get(0).lekcija11.nazivlekcije}" />
+			<p:outputLabel
+				value="Naslov test: #{resavanjeTestaManagedBean.test11.naslovtesta}" />
+			<p:outputLabel
+				value="Ukupan broj poena: #{resavanjeTestaManagedBean.test11.brpoenatesta}" />
+		</p:panelGrid>
+		<ui:repeat var="pitanje" value="#{resavanjeTestaManagedBean.pitanja}">
+			<p:panelGrid columns="1" style="margin-top:20px">
+				<p:outputLabel value="Tekst pitanja: #{pitanje.tekstpitanja}" />
+			</p:panelGrid>
+			<ui:repeat varStatus="status" var="odgovor"
+				value="#{resavanjeTestaManagedBean.odgovoriZaPitanje.get(pitanje)}">
+				<p:panelGrid columns="2">
+					<p:outputLabel>Tekst odgovora:</p:outputLabel>
+					<p:outputLabel>Tacan:</p:outputLabel>
+					<h:panelGrid border="0" columns="1" style="width:200px"
+						rendered="#{(resavanjeTestaManagedBean.odgovoriZaPitanje.get(pitanje)).size()>0}">
+						<p:outputLabel value="#{odgovor.tekstodgovora}" />
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="1" style="width:20px"
+						rendered="#{(resavanjeTestaManagedBean.odgovoriZaPitanje.get(pitanje)).size()>0}">
+						<p:selectBooleanCheckbox>
+							<p:ajax process="@form"
+								listener="#{resavanjeTestaManagedBean.promeniBoolUMapi(pitanje,status.index)}"></p:ajax>
+						</p:selectBooleanCheckbox>
+					</h:panelGrid>
+				</p:panelGrid>
+			</ui:repeat>
+			<h:panelGrid border="0" columns="1" style="width:200px"
+				rendered="#{(resavanjeTestaManagedBean.odgovoriZaPitanje.get(pitanje)).size() eq 0}">
+				<p:inputText
+					value="#{resavanjeTestaManagedBean.polaznikoviOdgovoriNaPitanjaBezOpcija[pitanje]}" />
+			</h:panelGrid>
+		</ui:repeat>
+		<p:commandButton value="Sacuvaj odgovore">
+			<p:ajax process="@form"
+				listener="#{resavanjeTestaManagedBean.sacuvajOdogovre()}"></p:ajax>
+		</p:commandButton>
+	</h:form>
+</h:body>
+</html>

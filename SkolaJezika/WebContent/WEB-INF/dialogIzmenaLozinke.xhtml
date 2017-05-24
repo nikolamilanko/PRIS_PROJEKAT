@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="dialogForm">
+		<p:dialog header="Izmena passworda" widgetVar="dlgIzmenaPassworda"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="izmenaPassworda" style="text-align:center;">
+				<h:outputText value="Unesite stari i novi password:" />
+
+				<p:separator />
+
+				<p:panelGrid columns="2" columnClasses="label,value">
+
+					<h:outputLabel for="stariPassword" value="Stari password:" />
+					<p:password id="stariPassword" value="#{manageBeanLogin.stariPassword}"
+						label="stari password" required="true" />
+
+					<h:outputLabel for="password" value="Novi password: " />
+					<p:password id="password" value="#{manageBeanLogin.noviPassword}"
+						match="potvrda" label="password" required="true" feedback="true"
+						validatorMessage="Password mora imati izmedju 1 i 20 karaktera i moze da sadrzi samo mala i velika slova i brojeve." />
+
+					<h:outputLabel for="potvrda" value="Potvrdi novi password: " />
+					<p:password id="potvrda" value="#{manageBeanLogin.potvrdaNovogPassworda}"
+						label="potvrdi password" required="true" />
+
+					<p:commandButton value="Sacuvaj"
+						actionListener="#{manageBeanLogin.izmeniPassword}"
+						update="izmenaPassworda :myform:msgs" validateClient="true" />
+					<p:button value="Nazad" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<h:form>
+		<h:panelGrid columns="2" border="0" style="margin-bottom:30px">
+			<p:outputLabel>Naslov testa:</p:outputLabel>
+			<p:inputText value="#{testManagedBean.test11.naslovtesta}"></p:inputText>
+			<p:outputLabel>Broj poena testa:</p:outputLabel>
+			<p:inputText value="#{testManagedBean.test11.brpoenatesta}"></p:inputText>
+			<p:outputLabel>Datum pocetka testa:</p:outputLabel>
+			<p:calendar value="#{testManagedBean.test11.datumtesta}" />
+		</h:panelGrid>
+		<ui:repeat var="value" value="#{testManagedBean.pitanja}">
+			<h:panelGrid border="1" columns="3">
+				<p:outputLabel>Tekst pitanja:</p:outputLabel>
+				<p:inputText value="#{value.tekstpitanja}"></p:inputText>
+				<p:commandButton value="Dodaj ponudjene odgovore">
+					<p:ajax listener="#{testManagedBean.setImaPonudjenihOdgovora()}"
+						process="@form" update="@form" render="@form" />
+				</p:commandButton>
+				<p:outputPanel rendered="#{testManagedBean.imaPonudjenihOdgovora}">Tekst odgovora:</p:outputPanel>
+				<p:outputPanel rendered="#{testManagedBean.imaPonudjenihOdgovora}">Tacan:</p:outputPanel>
+				<p:outputPanel rendered="#{testManagedBean.imaPonudjenihOdgovora}"></p:outputPanel>
+				<h:panelGrid rendered="#{not empty value.odgovornapitanje11s}">
+					<ui:repeat var="odgovor" value="#{value.odgovornapitanje11s}">
+						<p:outputPanel></p:outputPanel>
+						<p:inputText value="#{odgovor.tekstodgovora}" />
+					</ui:repeat>
+				</h:panelGrid>
+				<h:panelGrid columns="1"
+					rendered="#{not empty value.odgovornapitanje11s}">
+					<ui:repeat var="bool" value="#{testManagedBean.mapa.get(value)}"
+						varStatus="status">
+						<p:outputPanel></p:outputPanel>
+						<p:selectBooleanCheckbox value="#{bool}">
+							<f:ajax
+								listener="#{testManagedBean.promeniStanje(value,status.index)}"></f:ajax>
+						</p:selectBooleanCheckbox>
+					</ui:repeat>
+				</h:panelGrid>
+				<h:panelGrid columns="1"
+					rendered="#{not empty value.odgovornapitanje11s}">
+					<ui:repeat var="odgovor" value="#{value.odgovornapitanje11s}"
+						varStatus="status">
+						<p:outputPanel></p:outputPanel>
+						<p:commandButton value="obrisi">
+							<p:ajax
+								listener="#{testManagedBean.obrisiOdogovr(value,status.index)}"
+								process="@form" update="@form" render="@form" />
+						</p:commandButton>
+					</ui:repeat>
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:panelGrid rendered="#{not testManagedBean.imaPonudjenihOdgovora}"
+				style="margin-bottom:30px">
+			</h:panelGrid>
+			<p:commandButton rendered="#{testManagedBean.imaPonudjenihOdgovora}"
+				value="Dodaj odgovor" style="margin-bottom:30px; margin-top:-30px">
+				<p:ajax listener="#{testManagedBean.dodajOdgovor(value)}"
+					process="@form" update="@form" render="@form" />
+			</p:commandButton>
+		</ui:repeat>
+
+		<h:panelGrid border="0" columns="2">
+			<p:commandButton value="Dodaj pitanje"
+				style="margin-bottom:10px;margin-top:10px">
+				<p:ajax listener="#{testManagedBean.dodajPitanje()}" process="@form"
+					render="@form" update="@form" />
+			</p:commandButton>
+			<p:commandButton value="Obrisi poslednje pitanje"
+				style="margin-bottom:10px;margin-top:10px">
+				<p:ajax listener="#{testManagedBean.obrisiPitanje()}" process="@form"
+					render="@form" update="@form" />
+			</p:commandButton>
+			<p:commandButton value="Sacuvaj test"
+				style="margin-bottom:10px;margin-top:10px">
+				<p:ajax process="@form" render="@form" update="@form"
+					listener="#{testManagedBean.savePitanjaUBazu(manageBeanLogin.selektovanaLekcija)}" />
+			</p:commandButton>
+		</h:panelGrid>
+	</h:form>
+
+
+	<p:dialog header="GRESKA" widgetVar="dlg1" minHeight="40">
+		<h:outputText value="Morate uneti sve potrebne podatke za test!" />
+	</p:dialog>
+	<p:dialog header="GRESKA" widgetVar="dlg2" minHeight="40">
+		<h:outputText value="Morate uneti najmanje jedno pitanje!" />
+	</p:dialog>
+	<p:dialog header="GRESKA" widgetVar="dlg3" minHeight="40">
+		<h:outputText value="Sva pitanja i odgovori moraju imapti tekst!" />
+	</p:dialog>
+	<p:dialog header="GRESKA" widgetVar="dlg4" minHeight="40">
+		<h:outputText value="Sva pitanja sa ponudjenim odgovorima moraju imati najmanje jedan tacan!" />
+	</p:dialog>
+</h:body>
+</html>

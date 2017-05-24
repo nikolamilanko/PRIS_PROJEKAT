@@ -1,0 +1,256 @@
+drop table if exists ADMINISTRATOR11;
+
+drop table if exists ISHOD11;
+
+drop table if exists KOMENTAR11;
+
+drop table if exists KURS11;
+
+drop table if exists LEKCIJA11;
+
+drop table if exists LOGOVANJE11;
+
+drop table if exists ODGOVOR11;
+
+drop table if exists ODGOVORNAPITANJE11;
+
+drop table if exists PITANJE11;
+
+drop table if exists POLAZNIK11;
+
+drop table if exists PREDAVAC11;
+
+drop table if exists REZULTAT11;
+
+drop table if exists SLIKA11;
+
+drop table if exists TEST11;
+
+/*==============================================================*/
+/* Table: ADMINISTRATOR11                                       */
+/*==============================================================*/
+create table ADMINISTRATOR11
+(
+   IDADMIN              int not null auto_increment,
+   IDLOGOVANJA          int not null,
+   IMEADMIN             varchar(1024) not null,
+   PREZIMEADMIN         varchar(1024) not null,
+   EMAILADMIN           varchar(1024) not null,
+   primary key (IDADMIN)
+);
+
+/*==============================================================*/
+/* Table: ISHOD11                                               */
+/*==============================================================*/
+create table ISHOD11
+(
+   IDISHODA             int not null auto_increment,
+   IDKURSA              int not null,
+   IDPOLAZNIKA          int not null,
+   JEPOLOZIO            bool not null,
+   primary key (IDISHODA)
+);
+
+/*==============================================================*/
+/* Table: KOMENTAR11                                            */
+/*==============================================================*/
+create table KOMENTAR11
+(
+   IDKOMENTARA          int not null auto_increment,
+   IDPOLAZNIKA          int not null,
+   IDKURSA              int not null,
+   TEKSTKOMENTARA       varchar(1024) not null,
+   DATUMKOMENTARA       date not null,
+   primary key (IDKOMENTARA)
+);
+
+/*==============================================================*/
+/* Table: KURS11                                                */
+/*==============================================================*/
+create table KURS11
+(
+   IDKURSA              int not null auto_increment,
+   IDPREDAVACA          int not null,
+   NAZIVKURSA           varchar(1024) not null,
+   OPISKURSA            varchar(1024) not null,
+   POTREBNIPOENI        int not null,
+   DATUMPOCETKA         date not null,
+   DATUMKRAJA           date not null,
+   primary key (IDKURSA)
+);
+
+/*==============================================================*/
+/* Table: LEKCIJA11                                             */
+/*==============================================================*/
+create table LEKCIJA11
+(
+   IDLEKCIJE            int not null auto_increment,
+   IDKURSA              int not null,
+   TEKSTLEKCIJE         varchar(25200) not null,
+   VIDEOLEKCIJE         varchar(1024) not null,
+   NAZIVLEKCIJE         varchar(1024) not null,
+   primary key (IDLEKCIJE)
+);
+
+/*==============================================================*/
+/* Table: LOGOVANJE11                                           */
+/*==============================================================*/
+create table LOGOVANJE11
+(
+   IDLOGOVANJA          int not null auto_increment,
+   USERNAME             varchar(30) not null,
+   PASSWORD             varchar(30) not null,
+   primary key (IDLOGOVANJA)
+);
+
+/*==============================================================*/
+/* Table: ODGOVOR11                                             */
+/*==============================================================*/
+create table ODGOVOR11
+(
+   IDODGOVORA           int not null auto_increment,
+   IDPOLAZNIKA          int not null,
+   IDPITANJA            int not null,
+   TEKSTODGOVORA        varchar(1024),
+   OBELEZENIIODOGOVARA  varchar(1024),
+   primary key (IDODGOVORA)
+);
+
+/*==============================================================*/
+/* Table: ODGOVORNAPITANJE11                                    */
+/*==============================================================*/
+create table ODGOVORNAPITANJE11
+(
+   IDODGOVORANAPITANJE  int not null auto_increment,
+   IDPITANJA            int not null,
+   JETACAN              bool,
+   TEKSTODGOVORA        varchar(1024),
+   primary key (IDODGOVORANAPITANJE)
+);
+
+/*==============================================================*/
+/* Table: PITANJE11                                             */
+/*==============================================================*/
+create table PITANJE11
+(
+   IDPITANJA            int not null auto_increment,
+   IDTESTA              int not null,
+   TEKSTPITANJA         varchar(1024) not null,
+   primary key (IDPITANJA)
+);
+
+/*==============================================================*/
+/* Table: POLAZNIK11                                            */
+/*==============================================================*/
+create table POLAZNIK11
+(
+   IDPOLAZNIKA          int not null auto_increment,
+   IDLOGOVANJA          int not null,
+   IMEPOLAZNIKA         varchar(1024) not null,
+   PREZIMEPOLAZNIKA     varchar(1024) not null,
+   EMAILPOLAZNIKA       varchar(1024) not null,
+   DATUMRODJENJA        date not null,
+   primary key (IDPOLAZNIKA)
+);
+
+/*==============================================================*/
+/* Table: PREDAVAC11                                            */
+/*==============================================================*/
+create table PREDAVAC11
+(
+   IDPREDAVACA          int not null auto_increment,
+   IDLOGOVANJA          int not null,
+   IMEPREDAVACA         varchar(1024) not null,
+   PREZIMEPREDAVACA     varchar(1024) not null,
+   EMAILPREDAVACA       varchar(1024) not null,
+   TITULA               varchar(1024) not null,
+   primary key (IDPREDAVACA)
+);
+
+/*==============================================================*/
+/* Table: REZULTAT11                                            */
+/*==============================================================*/
+create table REZULTAT11
+(
+   IDREZULTATA          int not null auto_increment,
+   IDPOLAZNIKA          int not null,
+   IDTESTA              int not null,
+   BRPOENA              int,
+   POLOZIO              bool,
+   primary key (IDREZULTATA)
+);
+
+/*==============================================================*/
+/* Table: SLIKA11                                               */
+/*==============================================================*/
+create table SLIKA11
+(
+   IDSLIKE              int not null auto_increment,
+   IDLEKCIJE            int not null,
+   PUTANJASLIKE         varchar(1024) not null,
+   primary key (IDSLIKE)
+);
+
+/*==============================================================*/
+/* Table: TEST11                                                */
+/*==============================================================*/
+create table TEST11
+(
+   IDTESTA              int not null auto_increment,
+   IDLEKCIJE            int not null,
+   DATUMTESTA           date not null,
+   BRPOENATESTA         int not null,
+   NASLOVTESTA          varchar(1024) not null,
+   primary key (IDTESTA)
+);
+
+alter table ADMINISTRATOR11 add constraint FK_LOGOVANJEADMINISTRATOR foreign key (IDLOGOVANJA)
+      references LOGOVANJE11 (IDLOGOVANJA) on delete restrict on update restrict;
+
+alter table ISHOD11 add constraint FK_ISHODPOLAZNIK foreign key (IDPOLAZNIKA)
+      references POLAZNIK11 (IDPOLAZNIKA) on delete restrict on update restrict;
+
+alter table ISHOD11 add constraint FK_KURSISHOD foreign key (IDKURSA)
+      references KURS11 (IDKURSA) on delete restrict on update restrict;
+
+alter table KOMENTAR11 add constraint FK_KOMENTARPOLAZNIK foreign key (IDPOLAZNIKA)
+      references POLAZNIK11 (IDPOLAZNIKA) on delete restrict on update restrict;
+
+alter table KOMENTAR11 add constraint FK_KURSKOMENTAR foreign key (IDKURSA)
+      references KURS11 (IDKURSA) on delete restrict on update restrict;
+
+alter table KURS11 add constraint FK_PREDAVACKURS foreign key (IDPREDAVACA)
+      references PREDAVAC11 (IDPREDAVACA) on delete restrict on update restrict;
+
+alter table LEKCIJA11 add constraint FK_KURSLEKCIJA foreign key (IDKURSA)
+      references KURS11 (IDKURSA) on delete restrict on update restrict;
+
+alter table ODGOVOR11 add constraint FK_ODGOVORPOLAZNIK foreign key (IDPOLAZNIKA)
+      references POLAZNIK11 (IDPOLAZNIKA) on delete restrict on update restrict;
+
+alter table ODGOVOR11 add constraint FK_PITANJEODGOVOR foreign key (IDPITANJA)
+      references PITANJE11 (IDPITANJA) on delete restrict on update restrict;
+
+alter table ODGOVORNAPITANJE11 add constraint FK_ODGOVORNAPITANJEPITANJE foreign key (IDPITANJA)
+      references PITANJE11 (IDPITANJA) on delete restrict on update restrict;
+
+alter table PITANJE11 add constraint FK_TESTPITANJE foreign key (IDTESTA)
+      references TEST11 (IDTESTA) on delete restrict on update restrict;
+
+alter table POLAZNIK11 add constraint FK_LOGOVANJEPOLAZNIK foreign key (IDLOGOVANJA)
+      references LOGOVANJE11 (IDLOGOVANJA) on delete restrict on update restrict;
+
+alter table PREDAVAC11 add constraint FK_LOGOVANJEPREDAVAC foreign key (IDLOGOVANJA)
+      references LOGOVANJE11 (IDLOGOVANJA) on delete restrict on update restrict;
+
+alter table REZULTAT11 add constraint FK_REZULTATPOLAZNIK foreign key (IDPOLAZNIKA)
+      references POLAZNIK11 (IDPOLAZNIKA) on delete restrict on update restrict;
+
+alter table REZULTAT11 add constraint FK_REZULTATTEST foreign key (IDTESTA)
+      references TEST11 (IDTESTA) on delete restrict on update restrict;
+
+alter table SLIKA11 add constraint FK_LEKCIJASLIKA foreign key (IDLEKCIJE)
+      references LEKCIJA11 (IDLEKCIJE) on delete restrict on update restrict;
+
+alter table TEST11 add constraint FK_LEKCIJATEST foreign key (IDLEKCIJE)
+      references LEKCIJA11 (IDLEKCIJE) on delete restrict on update restrict;
